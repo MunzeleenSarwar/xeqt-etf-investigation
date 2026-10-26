@@ -14,8 +14,11 @@ h1 = ParagraphStyle("h1", parent=styles["Normal"], fontName="Helvetica-Bold", fo
 h2 = ParagraphStyle("h2", parent=styles["Normal"], fontName="Helvetica-Bold", fontSize=12.5, leading=16, textColor=colors.black, spaceBefore=10, spaceAfter=6)
 small = ParagraphStyle("small", parent=styles["Normal"], fontName="Helvetica", fontSize=9, leading=12, textColor=colors.black, spaceAfter=4)
 def P(t, s=body): return Paragraph(t, s)
+cell = ParagraphStyle("cell", parent=styles["Normal"], fontName="Helvetica", fontSize=9, leading=12, textColor=colors.black)
+cellhead = ParagraphStyle("cellhead", parent=styles["Normal"], fontName="Helvetica-Bold", fontSize=9, leading=12, textColor=colors.black)
 def tbl(data, widths):
-    t = Table(data, colWidths=widths, repeatRows=1)
+    wrapped = [[Paragraph(str(c), cellhead if r == 0 else cell) for c in row] for r, row in enumerate(data)]
+    t = Table(wrapped, colWidths=widths, repeatRows=1)
     t.setStyle(TableStyle([
         ("BACKGROUND", (0,0), (-1,0), colors.HexColor("#DDDDDD")),
         ("TEXTCOLOR", (0,0), (-1,-1), colors.black),
